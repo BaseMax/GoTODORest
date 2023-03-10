@@ -113,3 +113,5 @@ Your solution will be evaluated on the following criteria:
 - Is the error handling robust and informative?
 - Is the documentation clear and concise?
 - Are there any additional features or improvements you made that demonstrate your understanding of Go and RESTful APIs?
+
+Copyright, Max Base 2023
