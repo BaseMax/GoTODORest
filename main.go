@@ -62,12 +62,27 @@ func main() {
 
 func getAllTasksHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		tasks, err := getAllTasks(db)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
+		switch r.Method {
+		case http.MethodGet:
+			tasks, err := getAllTasks(db)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			writeJsonResponse(w, tasks)
+		case http.MethodPost:
+			task, err := decodeTaskFromBody(r.Body)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+			err = addTask(db, task)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			fmt.Fprintf(w, "Task with TITLE %v added succecfully", task.Title)
 		}
-		writeJsonResponse(w, tasks)
 	}
 }
 
@@ -78,6 +93,7 @@ func taskHandler(db *sql.DB) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+
 		switch r.Method {
 		// Handle GET method
 		case http.MethodGet:
@@ -107,20 +123,6 @@ func taskHandler(db *sql.DB) http.HandlerFunc {
 			}
 			writeJsonResponse(w, task)
 
-		// Handle POST method
-		case http.MethodPost:
-			task, err := decodeTaskFromBody(r.Body)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusBadRequest)
-				return
-			}
-			err = addTask(db, task)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			fmt.Fprintf(w, "Task with TITLE %v added succecfully", task.Title)
-
 		// Handke DELETE method
 		case http.MethodDelete:
 			err = deleteTask(db, taskId)
@@ -129,6 +131,7 @@ func taskHandler(db *sql.DB) http.HandlerFunc {
 				return
 			}
 			fmt.Fprintf(w, "Task with ID %v deleted successfully\n", taskId)
+
 		default:
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 			return
@@ -165,7 +168,7 @@ func writeJsonResponse(w http.ResponseWriter, data interface{}) {
 }
 
 func addTask(db *sql.DB, task *Task) error {
-	_, err := db.Exec("INSERT INTO tasks (id, title, description, done) VALUES (?, '?', '?', ?);", task.Id, task.Title, task.Description, task.Done)
+	_, err := db.Exec("INSERT INTO tasks (title, description, done) VALUES (?, ?, ?);", task.Title, task.Description, task.Done)
 	return err
 }
 
