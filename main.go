@@ -63,6 +63,7 @@ func main() {
 func getAllTasksHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
+		// Handle GET method
 		case http.MethodGet:
 			tasks, err := getAllTasks(db)
 			if err != nil {
@@ -70,6 +71,7 @@ func getAllTasksHandler(db *sql.DB) http.HandlerFunc {
 				return
 			}
 			writeJsonResponse(w, tasks)
+		// Handle POST method
 		case http.MethodPost:
 			task, err := decodeTaskFromBody(r.Body)
 			if err != nil {
