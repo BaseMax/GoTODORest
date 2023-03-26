@@ -54,12 +54,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// pingErr := db.Ping()
-	// if pingErr != nil {
-	// 	log.Fatal(pingErr)
-	// }
-	// fmt.Println("Connected!")
-
 	// Register the HTTP handlers
 	http.HandleFunc("/api/tasks", getAllTasksHandler(db))
 	http.HandleFunc("/api/tasks/", taskHandler(db))
@@ -120,12 +114,12 @@ func taskHandler(db *sql.DB) http.HandlerFunc {
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
-			addTask(db, task)
+			err = addTask(db, task)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-			writeJsonResponse(w, task)
+			fmt.Fprintf(w, "Task with TITLE %v added succecfully", task.Title)
 
 		// Handke DELETE method
 		case http.MethodDelete:
@@ -171,7 +165,7 @@ func writeJsonResponse(w http.ResponseWriter, data interface{}) {
 }
 
 func addTask(db *sql.DB, task *Task) error {
-	_, err := db.Exec("INSERT INTO tasks (title, description, done) VALUES ('?', '?', ?);", task.Title, task.Description, task.Done)
+	_, err := db.Exec("INSERT INTO tasks (id, title, description, done) VALUES (?, '?', '?', ?);", task.Id, task.Title, task.Description, task.Done)
 	return err
 }
 
