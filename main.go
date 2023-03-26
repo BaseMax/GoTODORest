@@ -90,7 +90,7 @@ func getAllTasks(db *sql.DB) (tasks []Task, err error) {
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
-	return tasks, nil
+	return
 }
 
 func writeJsonResponse(w http.ResponseWriter, data interface{}) {
