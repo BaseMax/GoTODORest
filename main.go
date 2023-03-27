@@ -44,6 +44,7 @@ func main() {
 	}
 	defer db.Close()
 
+	// Create table in database
 	if _, err = db.Exec(`
 	CREATE TABLE IF NOT EXISTS tasks (
 		id INT PRIMARY KEY AUTO_INCREMENT,
