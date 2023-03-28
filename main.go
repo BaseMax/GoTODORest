@@ -30,7 +30,7 @@ func main() {
 	}
 
 	if !isEnvExit("DBUSER", "DBPASS", "NET", "ADDR", "DBNAME") {
-		log.Fatal("environment variable muse exit!")
+		log.Fatal("environment variable must exit!")
 	}
 
 	// mysql database config
