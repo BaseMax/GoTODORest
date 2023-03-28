@@ -1,6 +1,10 @@
 # Go TODO Rest
 
-This project is a RESTful API built with Go that allows users to manage a simple TODO list. It includes endpoints for adding new tasks, viewing all tasks, updating tasks, and deleting tasks, following RESTful principles and using appropriate HTTP methods and status codes. The API uses the net/http package to handle HTTP requests and responses, and a data storage mechanism of your choice to store the TODO list items. The code is well-organized, modular, and readable, with robust error handling and clear documentation that describes the endpoints, their expected inputs and outputs, and any authentication or authorization requirements. Use this project as a foundation for building your own Go-based RESTful APIs.
+This project is a RESTful API built with Go that allows users to manage a simple TODO list. It includes endpoints for adding new tasks, viewing all tasks, updating tasks, and deleting tasks, following RESTful principles and using appropriate HTTP methods and status codes.
+
+The API uses the `net/http` package to handle HTTP requests and responses, and a data storage mechanism of your choice to store the TODO list items.
+
+The code is readable, with robust error handling and clear documentation that describes the endpoints, their expected inputs and outputs, and any authentication or authorization requirements. Use this project as a foundation for building your own Go-based RESTful APIs.
 
 ## Task
 
