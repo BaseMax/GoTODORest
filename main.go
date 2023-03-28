@@ -29,7 +29,7 @@ func main() {
 		log.Fatal("Error while loading .env file!")
 	}
 
-	if !isEnvExit(os.Getenv("DBUSER"), os.Getenv("DBPASS"), os.Getenv("NET"), os.Getenv("ADDR"), os.Getenv("DBNAME")) {
+	if !isEnvExit("DBUSER", "DBPASS", "NET", "ADDR", "DBNAME") {
 		log.Fatal("environment variable muse exit!")
 	}
 
