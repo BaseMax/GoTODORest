@@ -29,6 +29,10 @@ func main() {
 		log.Fatal("Error while loading .env file!")
 	}
 
+	if !isEnvExit(os.Getenv("DBUSER"), os.Getenv("DBPASS"), os.Getenv("NET"), os.Getenv("ADDR"), os.Getenv("DBNAME")) {
+		log.Fatal("environment variable muse exit!")
+	}
+
 	// mysql database config
 	cfg := mysql.Config{
 		User:                 os.Getenv("DBUSER"),
@@ -228,4 +232,17 @@ func decodeTaskFromBody(body io.ReadCloser) (*Task, error) {
 		return nil, err
 	}
 	return &task, nil
+}
+
+func isEnvExit(keys ...string) bool {
+	var is bool = false
+	for _, key := range keys {
+		if _, ok := os.LookupEnv(key); ok {
+			is = true
+		} else {
+			is = false
+			return is
+		}
+	}
+	return is
 }
