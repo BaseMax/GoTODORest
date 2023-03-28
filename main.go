@@ -15,6 +15,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Task structure
 type Task struct {
 	Id          int    `json:"id"`
 	Title       string `json:"title"`
@@ -38,6 +39,7 @@ func main() {
 		AllowNativePasswords: true,
 	}
 
+	// Connect to mysql database
 	db, err := sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {
 		log.Fatal(err)
@@ -74,17 +76,22 @@ func getAllTasksHandler(db *sql.DB) http.HandlerFunc {
 			writeJsonResponse(w, tasks)
 		// Handle POST method
 		case http.MethodPost:
+			var ex bool
 			task, err := decodeTaskFromBody(r.Body)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
-			err = addTask(db, task)
+			ex, err = addTask(db, task)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-			fmt.Fprintf(w, "Task with TITLE %v added succecfully", task.Title)
+			if ex {
+				fmt.Fprintf(w, "Task with TITLE %v added succecfully", task.Title)
+			} else {
+				fmt.Fprintf(w, "fields must not empty")
+			}
 		}
 	}
 }
@@ -170,9 +177,13 @@ func writeJsonResponse(w http.ResponseWriter, data interface{}) {
 	}
 }
 
-func addTask(db *sql.DB, task *Task) error {
+func addTask(db *sql.DB, task *Task) (bool, error) {
+	var exit bool = true
+	if task.Title == "" || task.Description == "" {
+		exit = false
+	}
 	_, err := db.Exec("INSERT INTO tasks (title, description, done) VALUES (?, ?, ?);", task.Title, task.Description, task.Done)
-	return err
+	return exit, err
 }
 
 func updateTask(db *sql.DB, task *Task) error {

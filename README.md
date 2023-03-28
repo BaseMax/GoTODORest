@@ -31,12 +31,14 @@ Response Body:
   {
     "id": 1,
     "title": "Buy groceries",
-    "completed": false
+    "description": "buy five groceries",
+    "done": false
   },
   {
     "id": 2,
     "title": "Do laundry",
-    "completed": true
+    "description": "this is test description",
+    "done": true
   }
 ]
 ```
@@ -51,7 +53,8 @@ Response Body:
 {
   "id": 1,
   "title": "Buy groceries",
-  "completed": false
+  "description": "buy five groceries",
+  "done": false
 }
 ```
 
@@ -64,7 +67,8 @@ Request Body:
 ```json
 {
   "title": "Clean the house",
-  "completed": false
+  "description": "this is test description",
+  "done": false
 }
 ```
 
@@ -74,7 +78,7 @@ Response Body:
 {
   "id": 3,
   "title": "Clean the house",
-  "completed": false
+  "done": false
 }
 ```
 
@@ -87,7 +91,8 @@ Request Body:
 ```json
 {
   "title": "Buy groceries",
-  "completed": true
+  "description": "buy five groceries",
+  "done": true
 }
 ```
 
@@ -114,4 +119,4 @@ Your solution will be evaluated on the following criteria:
 - Is the documentation clear and concise?
 - Are there any additional features or improvements you made that demonstrate your understanding of Go and RESTful APIs?
 
-Copyright, Max Base 2023
+Copyright, Max Base, MaxianEdison 2023
